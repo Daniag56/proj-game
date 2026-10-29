@@ -14,6 +14,33 @@
     }
   </section>
 
+  <form class="finder" (submit)="$event.preventDefault(); onBuscarId(idInput.value)">
+    <label for="game-id">Buscar por ID</label>
+    <div class="finder-row">
+      <input #idInput id="game-id" type="number" min="1" placeholder="Ej. 3" required>
+      <button type="submit">Buscar</button>
+    </div>
+  </form>
+
+  @if (existeJuego) {
+    <section class="finder-result">
+      <p class="eyebrow">Resultado</p>
+      <article class="card" [class]="'genre-' + existeJuego.genre.toLowerCase()">
+        <div class="cover">
+          <span class="initials">{{ existeJuego.title.charAt(0) }}</span>
+          <span class="platform">{{ existeJuego.platform }}</span>
+        </div>
+        <div class="body">
+          <span class="genre">{{ existeJuego.genre }} · ID {{ existeJuego.id }}</span>
+          <h3>{{ existeJuego.title }}</h3>
+          <div class="foot">
+            <span class="price">{{ existeJuego.price.toFixed(2) }} €</span>
+          </div>
+        </div>
+      </article>
+    </section>
+  }
+
   <main>
     @if (loading) {
       <div class="grid">

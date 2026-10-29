@@ -63,6 +63,57 @@
 }
 .sub { margin: 12px 0 0; color: var(--muted); }
 
+/* ---------- Buscador por ID ---------- */
+.finder {
+  display: grid;
+  gap: 8px;
+  max-width: 360px;
+  margin-bottom: 28px;
+}
+.finder label {
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.finder-row { display: flex; gap: 8px; }
+.finder input {
+  flex: 1;
+  min-width: 0;
+  padding: 11px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+.finder input::placeholder { color: var(--muted); }
+.finder input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.finder button {
+  padding: 11px 18px;
+  border: none;
+  border-radius: 12px;
+  background: var(--accent);
+  color: var(--bg);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter .2s, transform .15s;
+}
+.finder button:hover { filter: brightness(1.1); }
+.finder button:active { transform: scale(.97); }
+
+.finder-result {
+  max-width: 280px;
+  margin-bottom: 32px;
+}
+
 /* ---------- Grid & cards ---------- */
 .grid {
   display: grid;

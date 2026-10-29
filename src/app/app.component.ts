@@ -31,4 +31,14 @@ export class AppComponent implements OnInit{
       }
     });
   }
+
+  existeJuego : Game | null = null;
+
+  onBuscarId(id: string){
+    this.gamesService.getGameById(+id).subscribe({
+      next: (game : Game) => this.existeJuego = game,
+      error: () =>
+        this.existeJuego = null
+    })
+  }
 }
