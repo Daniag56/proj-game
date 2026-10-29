@@ -1,0 +1,228 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.shell {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px 48px;
+}
+
+/* ---------- Topbar ---------- */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 18px 0;
+  background: linear-gradient(var(--bg) 70%, transparent);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: .04em;
+  font-size: 1.25rem;
+  white-space: nowrap;
+}
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--accent);
+  color: var(--bg);
+  font-size: .85rem;
+  box-shadow: 0 0 24px var(--accent-glow);
+}
+.brand-name span { color: var(--accent); }
+
+/* ---------- Hero ---------- */
+.hero { padding: 40px 0 28px; }
+.eyebrow {
+  margin: 0 0 8px;
+  font-family: var(--font-mono);
+  font-size: .78rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.hero h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  line-height: 1.05;
+  letter-spacing: -.02em;
+}
+.sub { margin: 12px 0 0; color: var(--muted); }
+
+/* ---------- Grid & cards ---------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 18px;
+}
+
+.card {
+  --g1: #6366f1;
+  --g2: #22d3ee;
+  display: flex;
+  flex-direction: column;
+  border-radius: 18px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  overflow: hidden;
+  transition: transform .25s ease, border-color .25s, box-shadow .25s;
+  animation: rise .4s ease both;
+}
+.card:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in oklab, var(--g1) 60%, transparent);
+  box-shadow: 0 18px 40px -18px var(--g1);
+}
+
+.cover {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 20% 15%, rgba(255,255,255,.25), transparent 45%),
+    linear-gradient(135deg, var(--g1), var(--g2));
+  overflow: hidden;
+}
+.cover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(0deg, rgba(0,0,0,.08) 0 2px, transparent 2px 4px);
+  pointer-events: none;
+}
+.initials {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 3.2rem;
+  color: rgba(255,255,255,.92);
+  text-shadow: 0 4px 24px rgba(0,0,0,.3);
+  transition: transform .3s ease;
+}
+.card:hover .initials { transform: scale(1.08) rotate(-3deg); }
+.platform {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+  padding: 4px 9px;
+  border-radius: 8px;
+  background: rgba(0,0,0,.45);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  letter-spacing: .06em;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px;
+  flex: 1;
+}
+.genre {
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--g2);
+}
+.card h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+.foot {
+  margin-top: auto;
+  padding-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.price {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+/* Colores por género */
+.genre-platform   { --g1: #f97316; --g2: #facc15; }
+.genre-strategy   { --g1: #0ea5e9; --g2: #6366f1; }
+.genre-racing     { --g1: #ef4444; --g2: #f97316; }
+.genre-rpg        { --g1: #7c3aed; --g2: #c084fc; }
+.genre-sports     { --g1: #16a34a; --g2: #84cc16; }
+.genre-action     { --g1: #e11d48; --g2: #a855f7; }
+.genre-adventure  { --g1: #0d9488; --g2: #22d3ee; }
+.genre-simulation { --g1: #ca8a04; --g2: #4ade80; }
+
+/* ---------- Skeleton ---------- */
+.skeleton { animation: none; }
+.skeleton .cover, .skeleton .body span {
+  background: linear-gradient(90deg, var(--surface-2) 25%, var(--line) 50%, var(--surface-2) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.3s infinite linear;
+}
+.skeleton .cover::after { display: none; }
+.skeleton .body span { display: block; height: 12px; border-radius: 6px; }
+.skeleton .body span:first-child { width: 40%; }
+.skeleton .body span:last-child { width: 75%; height: 18px; margin-bottom: 40px; }
+
+/* ---------- Estados ---------- */
+.state {
+  max-width: 420px;
+  margin: 60px auto;
+  text-align: center;
+}
+.state-icon { font-size: 2.6rem; margin-bottom: 8px; }
+.state h2 { margin: 0 0 8px; font-family: var(--font-display); }
+.state p { margin: 0 0 20px; color: var(--muted); line-height: 1.5; }
+code {
+  font-family: var(--font-mono);
+  font-size: .85em;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: var(--surface-2);
+  color: var(--accent);
+}
+
+.footer {
+  margin-top: 56px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: .82rem;
+  text-align: center;
+}
+
+/* ---------- Animaciones ---------- */
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } }
+@keyframes shimmer { to { background-position: -200% 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ---------- Móvil ---------- */
+@media (max-width: 640px) {
+  .shell { padding: 0 16px 40px; }
+  .hero { padding: 24px 0 20px; }
+  .grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+  .initials { font-size: 2.4rem; }
+}
