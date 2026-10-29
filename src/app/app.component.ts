@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { GamesService } from './services/games.service';
+import { Game } from './models/game';
 
 @Component({
   selector: 'app-root',
@@ -9,4 +11,24 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'proj-game';
+
+  game: Game[] = [];
+
+  loading = true;
+  error = false;
+
+  private gamesService = inject(GamesService)
+
+  ngOnInit(): void{
+    this.gamesService.getGames().subscribe({
+      next: (game : Game[]) => {
+        this.game = game;
+        this.loading = false;
+      },
+      error: () => {
+        this.error = true;
+        this.loading = false;
+      }
+    });
+  }
 }
