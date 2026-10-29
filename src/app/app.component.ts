@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { GamesService } from './services/games.service';
 import { Game } from './models/game';
@@ -9,7 +9,7 @@ import { Game } from './models/game';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   title = 'proj-game';
 
   game: Game[] = [];
