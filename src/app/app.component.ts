@@ -12,78 +12,69 @@ import { Game } from './models/game';
 export class AppComponent implements OnInit {
   title = 'proj-game';
 
-  game: Game[] = [];
-  gamesFiltered: Game[] = [];
-  selectedGame: Game | null = null;
-
-  loading = true;
-  error = false;
-
   private gamesService = inject(GamesService);
+  games: Game[] = [];
+  selectedGame: Game | null = null;
+  selectedGenre = '';
+  selectedPlatform = '';
+  currentPage = 1;
+  pageSize = 5;
+  totalItems = 0;
+  totalPages = 0;
 
   ngOnInit(): void {
-    this.gamesService.getGames().subscribe({
-      next: (game: Game[]) => {
-        this.game = game;
-        this.gamesFiltered = game;
-        this.loading = false;
-        console.log(game);
-      },
-      error: () => {
-        this.error = true;
-        this.loading = false;
-      },
+    this.loadGames();
+  }
+
+  onGameId(id: string): void {
+    this.gamesService.getGameId(Number(id)).subscribe(data => {
+      this.selectedGame = data;
     });
+  }
+
+  loadGames(): void {
+    this.gamesService.getGames(this.currentPage, this.pageSize, this.selectedGenre, this.selectedPlatform).subscribe(response => {
+      this.games = response.body ?? [];
+      this.totalItems = Number(response.headers.get('X-Total-Count') ?? 0);
+      this.totalPages = Math.ceil(this.totalItems / this.pageSize);
+    });
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.loadGames();
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.loadGames();
+    }
   }
 
   onGenreChange(genre: string): void {
-    console.log(genre);
-    if (genre === 'all') {
-      this.gamesFiltered = this.game;
-    } else {
-      this.gamesService.getGamesByGenre(genre).subscribe({
-        next: (games: Game[]) => {
-          this.gamesFiltered = games;
-          this.loading = false;
-          console.log(games);
-        },
-        error: () => {
-          this.error = true;
-          this.loading = false;
-        },
-      });
-    }
-  }
-  onGameId(id: number): void {
-    this.gamesService.getGameId(id).subscribe({
-      next: (game: Game) => {
-        this.selectedGame = game;
-        this.loading = false;
-        console.log(game);
-      },
-      error: () => {
-        this.error = true;
-        this.loading = false;
-      },
-    });
+    this.selectedGenre = genre;
+    this.currentPage = 1;
+    this.loadGames();
   }
 
   onPlatformChange(platform: string): void {
-    console.log(platform);
-    if (platform === 'all') {
-      this.gamesFiltered = this.game;
-    } else {
-      this.gamesService.getGamesByPlatform(platform).subscribe({
-        next: (games: Game[]) => {
-          this.gamesFiltered = games;
-          this.loading = false;
-          console.log(games);
-        },
-        error: () => {
-          this.error = true;
-          this.loading = false;
-        },
-      });
-    }
+    this.selectedPlatform = platform;
+    this.currentPage = 1;
+    this.loadGames();
+  }
+
+  searchByTitle(text: string): void {
+    this.gamesService.searchGames(text).subscribe(data => {
+      this.games = data;
+    });
+  }
+
+  filterByPrice(min: string, max: string): void {
+    this.gamesService.getGamesByPrice(min, max).subscribe(data => {
+      this.games = data;
+    });
   }
 }
