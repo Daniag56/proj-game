@@ -7,9 +7,9 @@ import { Game } from './models/game';
   selector: 'app-root',
   imports: [RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   title = 'proj-game';
 
   game: Game[] = [];
@@ -19,11 +19,11 @@ export class AppComponent implements OnInit{
   loading = true;
   error = false;
 
-  private gamesService = inject(GamesService)
+  private gamesService = inject(GamesService);
 
-  ngOnInit(): void{
+  ngOnInit(): void {
     this.gamesService.getGames().subscribe({
-      next: (game : Game[]) => {
+      next: (game: Game[]) => {
         this.game = game;
         this.gamesFiltered = game;
         this.loading = false;
@@ -32,25 +32,31 @@ export class AppComponent implements OnInit{
       error: () => {
         this.error = true;
         this.loading = false;
-      }
+      },
     });
   }
-  filterByElement(element: string): void{
-    if(element === ' '){
+
+  onGenreChange(genre: string): void {
+    console.log(genre);
+    if (genre === 'all') {
       this.gamesFiltered = this.game;
-    }else{
-      this.gamesFiltered = this.game.filter((game: Game) => game.genre === element);
+    } else {
+      this.gamesService.getGamesByGenre(genre).subscribe({
+        next: (games: Game[]) => {
+          this.gamesFiltered = games;
+          this.loading = false;
+          console.log(games);
+        },
+        error: () => {
+          this.error = true;
+          this.loading = false;
+        },
+      });
     }
   }
-  onGenreChange(event : Event): void{
-    const select = event.target as HTMLSelectElement;
-    const genre = select.value;
-    console.log(genre);
-    this.filterByElement(genre);
-  }
-  getGameId(id: number): void{
+  onGameId(id: number): void {
     this.gamesService.getGameId(id).subscribe({
-      next: (game : Game) => {
+      next: (game: Game) => {
         this.selectedGame = game;
         this.loading = false;
         console.log(game);
@@ -58,7 +64,26 @@ export class AppComponent implements OnInit{
       error: () => {
         this.error = true;
         this.loading = false;
-      }
+      },
     });
+  }
+
+  onPlatformChange(platform: string): void {
+    console.log(platform);
+    if (platform === 'all') {
+      this.gamesFiltered = this.game;
+    } else {
+      this.gamesService.getGamesByPlatform(platform).subscribe({
+        next: (games: Game[]) => {
+          this.gamesFiltered = games;
+          this.loading = false;
+          console.log(games);
+        },
+        error: () => {
+          this.error = true;
+          this.loading = false;
+        },
+      });
+    }
   }
 }
