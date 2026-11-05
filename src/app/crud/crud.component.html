@@ -1,0 +1,91 @@
+<form #gameForm="ngForm" ngSubmit="onSaveGame()">
+  <div>
+    <label for="">Titulo</label>
+    <input
+      type="text"
+      name="title"
+      [(ngModel)]="this.game.title"
+      minlength="3"
+      #price="ngModel"
+      #title="ngModel"
+    />
+    <div>
+      <label for="stockId">Stock</label>
+      @let invalidStock = stock.invalid && (stock.dirty || stock.touched);
+      <input [class.invalid]="invalidStock"
+        type="number"
+        name="stock"
+        [(ngModel)]="game.stock"
+        required
+        min="0"
+        max="999"
+        #stock="ngModel"
+      />
+
+      <div>
+       @if (stock.invalid && (stock.dirty || stock.touched)) {
+       @if (stock.errors?.["required"]) {
+        <p>El stock es obligatorio.</p>
+      }
+      <p>El stock es obligatorio.</p>
+    }
+  </div>
+
+      </div>
+    </div>
+    <div>
+      <label for="">Precio</label>
+      <input
+        type="number"
+        name="price"
+        [(ngModel)]="game.price"
+        required
+        min="0.01"
+        max="100"
+        #price="ngModel"
+      />
+    </div>
+
+    @if (price.invalid && (price.dirty || price.touched)) {
+      @if (price.errors?.["required"]) {
+        <p>El precio es obligatorio.</p>
+      }
+      <p>El precio es obligatorio.</p>
+    }
+
+
+  @if (title.invalid && (title.dirty || title.touched)) {
+    @if (title.errors?.["required"]) {
+      <p>El título es obligatorio.</p>
+    }
+    @if (title.errors?.["minlength"]) {
+      <p>El título debe tener al menos 3 caracteres.</p>
+    }
+  }
+  <label for="genreId">Género: </label>
+  <select [(ngModel)]="this.game.genre" name="genre" #genre="ngModel">
+    <option value="">Selecciona un género</option>
+    <option value="Platform">Platform</option>
+    <option value="Strategy">Strategy</option>
+    <option value="Racing">Racing</option>
+    <option value="RPG">RPG</option>
+    <option value="Action">Action</option>
+    <option value="Adventure">Adventure</option>
+    <option value="Simulation">Simulation</option>
+    <option value="Sports">Sports</option>
+
+    <div>
+      @if (genre.invalid && genre.touched) {
+        @if (genre.errors?.["required"]) {
+          <p>El género es obligatorio.</p>
+        }
+      }
+    </div>
+    <button type="submit" [disabled]="!gameForm.valid"> Guardar</button>
+    <p>Válido: {{ gameForm.valid }}</p>
+    <p>Modificado: {{ gameForm.dirty }}</p>
+  </select>
+</form>
+
+{{this.game | json}}
+{{gameForm | json}}
