@@ -1,41 +1,98 @@
-<form #gameForm="ngForm" ngSubmit="onSaveGame()">
-  <div>
-    <label for="">Titulo</label>
-    <input
-      type="text"
-      name="title"
-      [(ngModel)]="this.game.title"
-      minlength="3"
-      #price="ngModel"
-      #title="ngModel"
-    />
-    <div>
-      <label for="stockId">Stock</label>
-      @let invalidStock = stock.invalid && (stock.dirty || stock.touched);
-      <input [class.invalid]="invalidStock"
-        type="number"
-        name="stock"
-        [(ngModel)]="game.stock"
-        required
-        min="0"
-        max="999"
-        #stock="ngModel"
-      />
+<section class="crud">
+  <h2>GESTIÓN DE VIDEOJUEGOS</h2>
 
-      <div>
-       @if (stock.invalid && (stock.dirty || stock.touched)) {
-       @if (stock.errors?.["required"]) {
-        <p>El stock es obligatorio.</p>
-      }
-      <p>El stock es obligatorio.</p>
-    }
-  </div>
-
-      </div>
-    </div>
-    <div>
-      <label for="">Precio</label>
+  <form #gameForm="ngForm" (ngSubmit)="onSaveGame(gameForm)">
+    <!-- Título -->
+    <div class="field">
+      <label for="titleId">Título</label>
+      @let invalidTitle = title.invalid && (title.dirty || title.touched);
       <input
+        id="titleId"
+        type="text"
+        name="title"
+        [(ngModel)]="game.title"
+        required
+        minlength="3"
+        maxlength="40"
+        #title="ngModel"
+        [class.invalid]="invalidTitle"
+        [class.valid]="title.valid && title.dirty"
+      />
+      @if (invalidTitle) {
+        @if (title.errors?.["required"]) {
+          <p class="error">⚠ El título es obligatorio.</p>
+        }
+        @if (title.errors?.["minlength"]) {
+          <p class="error">⚠ El título debe tener al menos 3 caracteres.</p>
+        }
+        @if (title.errors?.["maxlength"]) {
+          <p class="error">⚠ El título no puede superar 40 caracteres.</p>
+        }
+      }
+    </div>
+
+    <!-- Género -->
+    <div class="field">
+      <label for="genreId">Género</label>
+      @let invalidGenre = genre.invalid && genre.touched;
+      <select
+        id="genreId"
+        name="genre"
+        [(ngModel)]="game.genre"
+        required
+        #genre="ngModel"
+        [class.invalid]="invalidGenre"
+        [class.valid]="genre.valid && genre.dirty"
+      >
+        <option value="">Selecciona un género</option>
+        <option value="Platform">Platform</option>
+        <option value="Strategy">Strategy</option>
+        <option value="Racing">Racing</option>
+        <option value="RPG">RPG</option>
+        <option value="Action">Action</option>
+        <option value="Adventure">Adventure</option>
+        <option value="Simulation">Simulation</option>
+        <option value="Sports">Sports</option>
+      </select>
+      @if (invalidGenre) {
+        @if (genre.errors?.["required"]) {
+          <p class="error">⚠ Debes seleccionar un género.</p>
+        }
+      }
+    </div>
+
+    <!-- Plataforma -->
+    <div class="field">
+      <label for="platformId">Plataforma</label>
+      @let invalidPlatform = platform.invalid && platform.touched;
+      <select
+        id="platformId"
+        name="platform"
+        [(ngModel)]="game.platform"
+        required
+        #platform="ngModel"
+        [class.invalid]="invalidPlatform"
+        [class.valid]="platform.valid && platform.dirty"
+      >
+        <option value="">Selecciona una plataforma</option>
+        <option value="PC">PC</option>
+        <option value="PlayStation">PlayStation</option>
+        <option value="Xbox">Xbox</option>
+        <option value="Switch">Switch</option>
+      </select>
+      @if (invalidPlatform) {
+        @if (platform.errors?.["required"]) {
+          <p class="error">⚠ Debes seleccionar una plataforma.</p>
+        }
+      }
+    </div>
+
+    <!-- Precio -->
+    <div class="field">
+      <label for="priceId">Precio</label>
+      @let invalidPrice = price.invalid && (price.dirty || price.touched);
+      <input
+        id="priceId"
         type="number"
         name="price"
         [(ngModel)]="game.price"
@@ -43,49 +100,91 @@
         min="0.01"
         max="100"
         #price="ngModel"
+        [class.invalid]="invalidPrice"
+        [class.valid]="price.valid && price.dirty"
       />
-    </div>
-
-    @if (price.invalid && (price.dirty || price.touched)) {
-      @if (price.errors?.["required"]) {
-        <p>El precio es obligatorio.</p>
-      }
-      <p>El precio es obligatorio.</p>
-    }
-
-
-  @if (title.invalid && (title.dirty || title.touched)) {
-    @if (title.errors?.["required"]) {
-      <p>El título es obligatorio.</p>
-    }
-    @if (title.errors?.["minlength"]) {
-      <p>El título debe tener al menos 3 caracteres.</p>
-    }
-  }
-  <label for="genreId">Género: </label>
-  <select [(ngModel)]="this.game.genre" name="genre" #genre="ngModel">
-    <option value="">Selecciona un género</option>
-    <option value="Platform">Platform</option>
-    <option value="Strategy">Strategy</option>
-    <option value="Racing">Racing</option>
-    <option value="RPG">RPG</option>
-    <option value="Action">Action</option>
-    <option value="Adventure">Adventure</option>
-    <option value="Simulation">Simulation</option>
-    <option value="Sports">Sports</option>
-
-    <div>
-      @if (genre.invalid && genre.touched) {
-        @if (genre.errors?.["required"]) {
-          <p>El género es obligatorio.</p>
+      @if (invalidPrice) {
+        @if (price.errors?.["required"]) {
+          <p class="error">⚠ El precio es obligatorio.</p>
+        }
+        @if (price.errors?.["min"]) {
+          <p class="error">⚠ El precio debe ser superior a 0.</p>
+        }
+        @if (price.errors?.["max"]) {
+          <p class="error">⚠ El precio no puede superar 100 €.</p>
         }
       }
     </div>
-    <button type="submit" [disabled]="!gameForm.valid"> Guardar</button>
-    <p>Válido: {{ gameForm.valid }}</p>
-    <p>Modificado: {{ gameForm.dirty }}</p>
-  </select>
-</form>
 
-{{this.game | json}}
-{{gameForm | json}}
+    <!-- Stock -->
+    <div class="field">
+      <label for="stockId">Stock</label>
+      @let invalidStock = stock.invalid && (stock.dirty || stock.touched);
+      <input
+        id="stockId"
+        type="number"
+        name="stock"
+        [(ngModel)]="game.stock"
+        required
+        min="0"
+        max="999"
+        #stock="ngModel"
+        [class.invalid]="invalidStock"
+        [class.valid]="stock.valid && stock.dirty"
+      />
+      @if (invalidStock) {
+        @if (stock.errors?.["required"]) {
+          <p class="error">⚠ El stock es obligatorio.</p>
+        }
+        @if (stock.errors?.["min"]) {
+          <p class="error">⚠ El stock no puede ser negativo.</p>
+        }
+        @if (stock.errors?.["max"]) {
+          <p class="error">⚠ El stock no puede superar 999.</p>
+        }
+      }
+    </div>
+
+    <!-- Indicador global -->
+    @if (gameForm.invalid && gameForm.dirty) {
+      <p class="status warning">⚠ Existen campos pendientes de corregir.</p>
+    }
+    @if (gameForm.valid && gameForm.dirty) {
+      <p class="status ok">✔ Formulario preparado para guardar.</p>
+    }
+
+    <div class="actions">
+      <button type="submit" [disabled]="gameForm.invalid">
+        @if (game.id) {
+          Actualizar
+        } @else {
+          Crear
+        }
+      </button>
+      <button type="button" class="secondary" (click)="onCancelEdit(gameForm)">Cancelar</button>
+    </div>
+
+    <!-- Inspección didáctica (se puede eliminar al terminar) -->
+    <pre>
+Formulario válido: {{ gameForm.valid }}
+Formulario dirty: {{ gameForm.dirty }}
+
+Título válido: {{ title.valid }}
+Título dirty: {{ title.dirty }}
+Título touched: {{ title.touched }}
+
+Errores:
+{{ title.errors | json }}
+    </pre>
+  </form>
+
+  <h2>VIDEOJUEGOS</h2>
+  <ul class="list">
+    @for (item of games; track item.id) {
+      <li>
+        <span>{{ item.title }} · {{ item.genre }} · {{ item.platform }} · {{ item.price }} € · Stock {{ item.stock }}</span>
+        <button type="button" (click)="onEditGame(item)">Editar</button>
+      </li>
+    }
+  </ul>
+</section>

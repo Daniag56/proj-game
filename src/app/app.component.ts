@@ -2,10 +2,11 @@ import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { GamesService } from './services/games.service';
 import { Game } from './models/game';
+import { CrudComponent } from './crud/crud.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, CrudComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })

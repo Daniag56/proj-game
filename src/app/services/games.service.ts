@@ -44,4 +44,16 @@ export class GamesService {
 
     return this.http.get<Game[]>(this.apiUrl, { params });
   }
+
+  getAllGames(): Observable<Game[]> {
+    return this.http.get<Game[]>(this.apiUrl);
+  }
+
+  createGame(game: Game): Observable<Game> {
+    return this.http.post<Game>(this.apiUrl, game);
+  }
+
+  updateGame(game: Game): Observable<Game> {
+    return this.http.put<Game>(`${this.apiUrl}/${game.id}`, game);
+  }
 }
