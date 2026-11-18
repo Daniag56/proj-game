@@ -1,22 +1,16 @@
 <section class="crud">
   <h2>GESTIÓN DE VIDEOJUEGOS</h2>
 
-  <form #gameForm="ngForm" (ngSubmit)="onSaveGame(gameForm)">
+  <form [formGroup]="formGroup" #gameForm="ngForm" (ngSubmit)="onSaveGame(gameForm)">
     <!-- Título -->
     <div class="field">
-      <label for="titleId">Título</label>
+      <label for = "titleId">Titulo</label>
       @let invalidTitle = title.invalid && (title.dirty || title.touched);
-      <input
-        id="titleId"
-        type="text"
-        name="title"
-        [(ngModel)]="game.title"
-        required
-        minlength="3"
-        maxlength="40"
-        #title="ngModel"
-        [class.invalid]="invalidTitle"
-        [class.valid]="title.valid && title.dirty"
+      <input id = "titleId"
+                  type = "text"
+                  formControlName="title"
+                  [class.invalid]="invalidTitle"
+                  [class.valid]="title.valid && title.dirty"
       />
       @if (invalidTitle) {
         @if (title.errors?.["required"]) {
@@ -37,10 +31,7 @@
       @let invalidGenre = genre.invalid && genre.touched;
       <select
         id="genreId"
-        name="genre"
-        [(ngModel)]="game.genre"
-        required
-        #genre="ngModel"
+        formControlName="genre"
         [class.invalid]="invalidGenre"
         [class.valid]="genre.valid && genre.dirty"
       >
@@ -67,10 +58,7 @@
       @let invalidPlatform = platform.invalid && platform.touched;
       <select
         id="platformId"
-        name="platform"
-        [(ngModel)]="game.platform"
-        required
-        #platform="ngModel"
+        formControlName="platform"
         [class.invalid]="invalidPlatform"
         [class.valid]="platform.valid && platform.dirty"
       >
@@ -94,12 +82,7 @@
       <input
         id="priceId"
         type="number"
-        name="price"
-        [(ngModel)]="game.price"
-        required
-        min="0.01"
-        max="100"
-        #price="ngModel"
+        formControlName="price"
         [class.invalid]="invalidPrice"
         [class.valid]="price.valid && price.dirty"
       />
@@ -123,12 +106,7 @@
       <input
         id="stockId"
         type="number"
-        name="stock"
-        [(ngModel)]="game.stock"
-        required
-        min="0"
-        max="999"
-        #stock="ngModel"
+        formControlName="stock"
         [class.invalid]="invalidStock"
         [class.valid]="stock.valid && stock.dirty"
       />
