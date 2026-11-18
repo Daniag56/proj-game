@@ -13,3 +13,11 @@ body {
     #0b0d17;
   background-attachment: fixed;
 }
+
+input.invalid, select.invalid, textarea.invalid {
+  border: 2px solid #bf4040;
+}
+.error {
+  color: #a52e2e;
+  font-size: 0.9rem;
+}
